@@ -1,0 +1,8 @@
+extends layout
+
+block content
+ h1= title
+ - const image_names = ['book1.jpg', 'bike.jpg', 'bike1.jpg', 'camera.jpg', 'cameraicon1.jpg']
+ for _ in [1, 2, 3]
+  - const randomIndex = Math.floor(Math.random() * 5)
+  img(src=`/images/${image_names[randomIndex]}`, alt=image_names[randomIndex], height='300', width='300')

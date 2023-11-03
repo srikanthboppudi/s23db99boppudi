@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  - const results = [{itemName: "porter", itemCategory: "book", itemPrice: 17.99}, {itemName: "pulsar", itemCategory: "bike", itemPrice: 9.99}, {itemName: "DSLR", itemCategory: "camera", itemPrice: 12.49}]
+  script. 
+    function buy(index){
+      alert("You purchased items "+ (index+1));
+    }
+  div.container-fluid
+    div.row
+        each item, index in results
+          div.col-sm-2(onclick = `buy(${index})`)
+             p Item Name: #{item.itemName}
+             p Itemcategory: #{item.itemCategory}
+             p ItemPrice: $#{item.itemPrice.toFixed(2)}
