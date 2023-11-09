@@ -55,4 +55,3 @@ exports.item_view_all_Page = async function(req, res) {
     res.send(`{"error": ${err}}`);
     }
     };
-
