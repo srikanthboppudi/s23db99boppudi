@@ -9,3 +9,7 @@ var item_controller = require('../controllers/items')
 /*GET items*/
 router.get('/',item_controller.item_view_all_Page);
 module.exports = router;
+
+
+// GET request for one costume.
+router.get('/items/:id', item_controller.item_detail);
