@@ -15,3 +15,5 @@ module.exports = router;
 router.get('/items/:id', item_controller.item_detail);
 /* GET detail costume page */
 router.get('/detail', item_controller.item_view_one_Page);
+/* GET create costume page */
+router.get('/create', item_controller.item_create_Page);
