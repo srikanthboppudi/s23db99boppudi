@@ -17,3 +17,8 @@ router.get('/items/:id', item_controller.item_detail);
 router.get('/detail', item_controller.item_view_one_Page);
 /* GET create costume page */
 router.get('/create', item_controller.item_create_Page);
+/* GET create update page */
+router.get('/update', item_controller.item_update_Page);
+/* GET delete costume page */
+router.get('/delete', item_controller.item_delete_Page);
+
