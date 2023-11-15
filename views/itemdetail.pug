@@ -1,0 +1,20 @@
+extends layout
+block content
+ h1= title
+ - let itemid = toShow._id
+ - let itemName = toShow.itemName
+ - let itemcategory = toShow.itemcategory
+ - let itemPrice = toShow.itemPrice
+ div
+  div.row
+   div(class='itemAttr mr-3') Item ID is:
+   div #{itemid}
+  div.row
+   div(class='itemAttr mr-3') Item Name is:
+   div #{itemName}
+  div.row
+   div(class='itemAttr mr-3') Item Category is:
+   div #{itemcategory}
+  div.row
+   div(class='itemAttr mr-3') Item Price is:
+   div #{itemPrice}

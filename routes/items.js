@@ -13,3 +13,5 @@ module.exports = router;
 
 // GET request for one costume.
 router.get('/items/:id', item_controller.item_detail);
+/* GET detail costume page */
+router.get('/detail', item_controller.item_view_one_Page);
