@@ -7,28 +7,28 @@ block content
   - let itemid = toShow._id
   - let itemName = toShow.itemName
   - let itemcategory = toShow.itemcategory
-  - let itemPrice = toShow.size
-  - let actionid = "/resource/costumes/" + costumeid
+  - let itemPrice = toShow.itemPrice
+  - let actionid = "/resource/items/" + itemid
   script let actionid = "#{actionid}"
   div
    div.row
-    div(class='costumeAttr mr-3') Costume ID is:
-    div #{costumeid}
+    div(class='itemAttr mr-3') Item ID is:
+    div #{itemid}
    div.row
-    div(class='costumeAttr mr-3') Costume Type is:
-    div #{costume_type}
+    div(class='itemAttr mr-3') Item Name is:
+    div #{itemName}
    div.row
-    div(class='costumeAttr mr-3') Costume Size is:
-    div #{costumesize}
+    div(class='itemAttr mr-3') Item Category is:
+    div #{itemcategory}
    div.row
-    div(class='costumeAttr mr-3') Costume Cost is:
-    div #{costumecost}
+    div(class='itemAttr mr-3') Item Price is:
+    div #{itemPrice}
  button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
  button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
  script.
   function cancel() {
    // Go back to the home page for the costume collection
-   window.location.href='/costumes'
+   window.location.href='/items'
   }
  script.
   function deleteOnid() {
@@ -40,7 +40,7 @@ block content
     return resp.json(); // or resp.text() or whatever the server sends
    }).then((body) => {
     alert("Delete succeded")
-    window.location.href='/costumes'
+    window.location.href='/items'
     // TODO handle body
    }).catch((error) => {
    // TODO handle error
