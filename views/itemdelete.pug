@@ -1,49 +1,71 @@
 extends layout
+
 block content
- h1= title
- if (toShow == null)
-  h2 No instance to delete
- else
-  - let itemid = toShow._id
-  - let itemName = toShow.itemName
-  - let itemcategory = toShow.itemcategory
-  - let itemPrice = toShow.itemPrice
-  - let actionid = "/resource/items/" + itemid
-  script let actionid = "#{actionid}"
-  div
-   div.row
-    div(class='itemAttr mr-3') Item ID is:
-    div #{itemid}
-   div.row
-    div(class='itemAttr mr-3') Item Name is:
-    div #{itemName}
-   div.row
-    div(class='itemAttr mr-3') Item Category is:
-    div #{itemcategory}
-   div.row
-    div(class='itemAttr mr-3') Item Price is:
-    div #{itemPrice}
- button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
- button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
- script.
-  function cancel() {
-   // Go back to the home page for the costume collection
-   window.location.href='/items'
-  }
- script.
-  function deleteOnid() {
-   console.log("starting delete")
-   // delete first
-   fetch(actionid, {
-    method: 'DELETE' // Don't need a body for the delete
-   }).then((resp) => {
-    return resp.json(); // or resp.text() or whatever the server sends
-   }).then((body) => {
-    alert("Delete succeded")
-    window.location.href='/items'
-    // TODO handle body
-   }).catch((error) => {
-   // TODO handle error
-    alert("Delete failed " + error )
-   });
-   }
+  .container
+    .card.mt-5
+      .card-header
+        h1.text-center= title
+
+      if (toShow == null)
+        .card-body
+          h2.text-center No instance to delete
+      else
+        - let itemid = toShow._id
+        - let itemName = toShow.itemName
+        - let itemcategory = toShow.itemcategory
+        - let itemPrice = toShow.itemPrice
+        - let actionid = "/resource/items/" + itemid
+
+        script.
+          let actionid = "#{actionid}"
+
+        .row.mt-3
+          .col-md-6
+            .card
+              .card-body
+                h5.card-title Item ID:
+                p.card-text #{itemid}
+          .col-md-6
+            .card
+              .card-body
+                h5.card-title Item Name:
+                p.card-text #{itemName}
+
+        .row.mt-3
+          .col-md-6
+            .card
+              .card-body
+                h5.card-title Item Category:
+                p.card-text #{itemcategory}
+          .col-md-6
+            .card
+              .card-body
+                h5.card-title Item Price:
+                p.card-text #{itemPrice}
+
+        .row.mt-3
+          .col-md-12.text-center
+            button.btn.btn-danger.m-2(onclick="deleteOnid()") Delete
+            button.btn.btn-secondary.m-2(onclick="cancel()") Cancel
+
+  script.
+    function cancel() {
+      // Go back to the home page for the costume collection
+      window.location.href='/items'
+    }
+
+  script.
+    function deleteOnid() {
+      console.log("starting delete")
+      // delete first
+      fetch(actionid, {
+        method: 'DELETE' // Don't need a body for the delete
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Delete succeeded")
+        window.location.href='/items'
+      }).catch((error) => {
+        alert("Delete failed " + error )
+      });
+    }
