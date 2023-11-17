@@ -8,10 +8,16 @@ block content
       alert("You purchased items "+ (index+1));
     }
   div.container-fluid
-    div.row
+    div.row.m-1
         each item, index in results
+          - let destination = `dispatch(\"/items/update?id=${item._id}\")`
           div.col-sm-2(onclick = `buy(${index})`)
              p Item Name: #{item.itemName}
              p Itemcategory: #{item.itemcategory}
              p ItemPrice: $#{item.itemPrice.toFixed(2)}
-             
+             button.btn( class="btn-primary ml-1", onclick= destination) Update
+
+  script.
+    function dispatch(path){
+      window.location.href=path
+    } 
