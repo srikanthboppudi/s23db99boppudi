@@ -8,38 +8,29 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-  Account.findOne({ username: username })
-  .then(function (user){
-  if (err) { return done(err); }
-  if (!user) {
-  return done(null, false, { message: 'Incorrect username.' });
-  }
-  if (!user.validPassword(password)) {
-  return done(null, false, { message: 'Incorrect password.' });
-  }
-  return done(null, user);
+  function (username, password, done) {
+    Account.findOne({ username: username })
+      .then(function (user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      })
+      .catch(function (err) {
+        return done(err)
+      })
   })
-  .catch(function(err){
-  return done(err)
-  })
-  })
-  )
+)
+//Username and password
+const mongoose = require('mongoose');
+const mobile = require('./models/items');
 require('dotenv').config();
 const connectionString = "mongodb+srv://srikanth:Boppudi123@cluster0.4pmxpy5.mongodb.net/?retryWrites=true&w=majority"
 process.env.MONGO_CON
-
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const passportLocalMongoose = require("passport-local-mongoose");
-const accountSchema = new Schema({
-username: String,
-password: String
-});
-accountSchema.plugin(passportLocalMongoose);
-// We export the Schema to avoid attaching the model to the
-// default mongoose connection.
-module.exports = mongoose.model("Account", accountSchema);
 
 
 mongoose.connect(connectionString);
@@ -47,8 +38,9 @@ mongoose.connect(connectionString);
 var db = mongoose.connection;
 //Bind connection to error event
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once("open", function(){
-console.log("Connection to DB succeeded")});
+db.once("open", function () {
+  console.log("Connection to DB succeeded")
+});
 var items = require("./models/items");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -71,25 +63,33 @@ app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false
-  }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/items', itemsRouter);
 app.use('/board', boardRouter);
-app.use('/choose',chooseRouter);
-app.use('/resource',resourceRouter);
+app.use('/choose', chooseRouter);
+app.use('/resource', resourceRouter);
+
+// passport config
+// Use the existing connection
+// The Account model
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -99,35 +99,44 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 // We can seed the collection if needed on server start
-async function recreateDB(){
-// Delete everything
-await items.deleteMany();
-let instance1 = new
-items({itemName:"royalenfield", itemcategory:'bike',
-itemPrice:300});
-instance1.save().then(doc=>{
-console.log("First object saved")}
-).catch(err=>{
-console.error(err)
-});
-let instance2 = new
-items({itemName:"harryporter", itemcategory:'book',
-itemPrice:200});
-instance2.save().then(doc=>{
-console.log("Second object saved")}
-).catch(err=>{
-console.error(err)
-});
-let instance3 = new
-items({itemName:"dslr", itemcategory:'camera',
-itemPrice:350});
-instance3.save().then(doc=>{
-console.log("Third object saved")}
-).catch(err=>{
-console.error(err)
-});
+async function recreateDB() {
+  // Delete everything
+  await items.deleteMany();
+  let instance1 = new
+    items({
+      itemName: "royalenfield", itemcategory: 'bike',
+      itemPrice: 300
+    });
+  instance1.save().then(doc => {
+    console.log("First object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  let instance2 = new
+    items({
+      itemName: "harryporter", itemcategory: 'book',
+      itemPrice: 200
+    });
+  instance2.save().then(doc => {
+    console.log("Second object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  let instance3 = new
+    items({
+      itemName: "dslr", itemcategory: 'camera',
+      itemPrice: 350
+    });
+  instance3.save().then(doc => {
+    console.log("Third object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
 }
 let reseed = true;
-if (reseed) {recreateDB();}
+if (reseed) { recreateDB(); }
 
 module.exports = app;
